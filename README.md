@@ -219,13 +219,23 @@ docker compose down -v
 - Redis dikonfigurasi dengan `maxmemory 256mb` dan policy `allkeys-lru`. Data session percakapan otomatis terhapus saat memory penuh.
 - Untuk production di VPS, disarankan menggunakan HTTPS dengan reverse proxy seperti Nginx + Certbot.
 
+---
+## Contoh chat
+
 <div align="center">
-  <p>Contoh chat bot</p>
   <img src="assets/Screenshot1.png" alt="chatbot" width="500">
   <img src="assets/Screenshot2.png" alt="chatbot2" width="500">
 </div>
 <div align="center">
 ## 👤 Author
+
+---
+
+## License
+
+MIT License — feel free to use this as a reference for your own projects.
+
+---
 
 **[Agung Perdana]**
 
