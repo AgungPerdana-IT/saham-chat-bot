@@ -41,7 +41,7 @@ Code JavaScript (format output)
    v
 Telegram (kirim balasan)
 ```
-<img src="assets/screenshot3.png" alt="workflow" width="500">
+<img src="assets/Screenshot3.png" alt="workflow" width="500">
 
 ---
 
