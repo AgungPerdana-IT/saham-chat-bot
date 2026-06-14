@@ -1,4 +1,10 @@
-# Chatbot Saham
+# 🤖 Chatbot Saham
+
+[![Docker](https://img.shields.io/badge/Docker-29.4.3-2496ED?style=flat-square&logo=docker&logoColor=white)](https://docker.com)
+[![n8n](https://img.shields.io/badge/n8n-2.23.4-EA4B71?style=flat-square&logo=n8n&logoColor=white)](https://n8n.io)
+[![Redis](https://img.shields.io/badge/Redis-7--alpine-DC382D?style=flat-square&logo=redis&logoColor=white)](https://redis.io)
+[![Gemini](https://img.shields.io/badge/Gemini-Pro-4285F4?style=flat-square&logo=google&logoColor=white)](https://aistudio.google.com)
+[![Telegram](https://img.shields.io/badge/Telegram-Bot-26A5E4?style=flat-square&logo=telegram&logoColor=white)](https://core.telegram.org/bots)
 
 Chatbot investasi saham berbasis Telegram yang dibangun dengan n8n AI Agent, Google Gemini, Redis, Google Sheet, Alpha Vantage, GoAPI, dan NewsAPI. Chatbot dapat menjawab pertanyaan harga saham (IDX & AS), berita pasar, analisis sentimen, edukasi istilah investasi, dan menampilkan portofolio watchlist.
 
