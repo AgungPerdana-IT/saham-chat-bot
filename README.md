@@ -41,8 +41,9 @@ Code JavaScript (format output)
    v
 Telegram (kirim balasan)
 ```
+<div align="center">
 <img src="assets/Screenshot3.png" alt="workflow" width="500">
-
+</div>
 ---
 
 ## Struktur Folder
@@ -218,6 +219,11 @@ docker compose down -v
 - Redis dikonfigurasi dengan `maxmemory 256mb` dan policy `allkeys-lru`. Data session percakapan otomatis terhapus saat memory penuh.
 - Untuk production di VPS, disarankan menggunakan HTTPS dengan reverse proxy seperti Nginx + Certbot.
 
+<div align="center">
+Contoh chat bot
+<img src="assets/Screenshot1.png" alt="chatbot" width="500">
+<img src="assets/Screenshot2.png" alt="chatbot2" width="500">
+</div>
 <div align="center">
 ## 👤 Author
 
