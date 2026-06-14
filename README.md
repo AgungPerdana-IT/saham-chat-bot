@@ -226,8 +226,6 @@ docker compose down -v
   <img src="assets/Screenshot1.png" alt="chatbot" width="500">
   <img src="assets/Screenshot2.png" alt="chatbot2" width="500">
 </div>
-<div align="center">
-## 👤 Author
 
 ---
 
@@ -236,6 +234,9 @@ docker compose down -v
 MIT License — feel free to use this as a reference for your own projects.
 
 ---
+
+<div align="center">
+## 👤 Author
 
 **[Agung Perdana]**
 
