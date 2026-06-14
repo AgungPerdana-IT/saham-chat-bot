@@ -224,7 +224,7 @@ docker compose down -v
   <img src="assets/Screenshot1.png" alt="chatbot" width="500">
   <img src="assets/Screenshot2.png" alt="chatbot2" width="500">
 </div>
-
+<div align="center">
 ## 👤 Author
 
 **[Agung Perdana]**
