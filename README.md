@@ -220,11 +220,11 @@ docker compose down -v
 - Untuk production di VPS, disarankan menggunakan HTTPS dengan reverse proxy seperti Nginx + Certbot.
 
 <div align="center">
-Contoh chat bot
-<img src="assets/Screenshot1.png" alt="chatbot" width="500">
-<img src="assets/Screenshot2.png" alt="chatbot2" width="500">
+  <p>Contoh chat bot</p>
+  <img src="assets/Screenshot1.png" alt="chatbot" width="500">
+  <img src="assets/Screenshot2.png" alt="chatbot2" width="500">
 </div>
-<div align="center">
+
 ## 👤 Author
 
 **[Agung Perdana]**
