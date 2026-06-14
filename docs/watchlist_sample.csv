@@ -1,0 +1,11 @@
+ticker,nama_perusahaan,sektor,harga_beli,harga_target,lot,tanggal_beli,catatan
+BBCA,Bank Central Asia,Perbankan,9200,11000,10,2024-01-15,Saham blue chip perbankan
+TLKM,Telkom Indonesia,Telekomunikasi,3650,4200,20,2024-02-01,BUMN telko terbesar
+BBRI,Bank Rakyat Indonesia,Perbankan,5100,6500,15,2024-02-20,Fokus UMKM & ritel
+GOTO,GoTo Group,Teknologi,68,120,500,2024-03-10,Spekulatif jangka panjang
+ASII,Astra International,Otomotif & Manufaktur,5050,6000,8,2024-03-25,Konglomerat diversified
+BMRI,Bank Mandiri,Perbankan,6250,7500,12,2024-04-05,BUMN perbankan terbesar
+UNVR,Unilever Indonesia,Consumer Goods,2100,2800,25,2024-04-18,Dividen konsisten
+ICBP,Indofood CBP,Consumer Goods,10200,12000,5,2024-05-02,Indomie goes global
+PGAS,Perusahaan Gas Negara,Energi,1580,2000,30,2024-05-20,Infrastruktur gas BUMN
+ANTM,Aneka Tambang,Pertambangan,1650,2200,40,2024-06-01,Exposure ke nikel & emas

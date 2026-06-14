@@ -1,0 +1,43 @@
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis_data:/data
+    networks:
+      - n8n-network
+
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    depends_on:
+      - redis
+    ports:
+      - "${N8N_PORT}:5678"
+    environment:
+      - TZ=${TZ}
+      - WEBHOOK_URL=${NGROK_URL}
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+    networks:
+      - n8n-network
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    container_name: ngrok
+    restart: unless-stopped
+    command: http n8n:5678
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    depends_on:
+      - n8n
+    networks:
+      - n8n-network
+
+networks:
+  n8n-network:
+    driver: bridge

@@ -1,0 +1,16 @@
+id,kategori,pertanyaan,jawaban
+1,Dasar,Apa itu saham?,Saham adalah bukti kepemilikan sebagian perusahaan. Kalau lo beli saham BBCA berarti lo jadi salah satu pemilik Bank BCA.
+2,Dasar,Apa itu lot?,1 lot = 100 lembar saham. Jadi kalau harga BBCA Rp9.000 per lembar maka 1 lot harganya Rp900.000.
+3,Dasar,Apa itu dividen?,Dividen adalah pembagian keuntungan perusahaan ke pemegang saham. Biasanya dibayar 1-2x setahun dalam bentuk tunai.
+4,Analisis,Apa itu PER?,PER (Price to Earnings Ratio) = harga saham dibagi laba per saham. PER 15x artinya investor bayar 15x lipat laba tahunan. Makin rendah makin murah secara historis.
+5,Analisis,Apa itu PBV?,PBV (Price to Book Value) = harga saham dibagi nilai buku per saham. PBV di bawah 1 berarti saham diperdagangkan di bawah nilai aset bersihnya.
+6,Analisis,Apa itu ROE?,ROE (Return on Equity) = laba bersih dibagi ekuitas. Mengukur seberapa efisien perusahaan menggunakan modal sendiri. ROE di atas 15% umumnya dianggap baik.
+7,Analisis,Apa itu EPS?,EPS (Earnings Per Share) = laba bersih dibagi jumlah saham beredar. Menunjukkan berapa laba yang dihasilkan per lembar saham.
+8,Trading,Apa itu support dan resistance?,Support = level harga di mana saham cenderung berhenti turun karena banyak pembeli. Resistance = level harga di mana saham cenderung berhenti naik karena banyak penjual.
+9,Trading,Apa itu stop loss?,Stop loss adalah batas harga di mana lo memutuskan menjual saham untuk membatasi kerugian. Contoh: beli di 1000 pasang stop loss di 900 artinya maksimal rugi 10%.
+10,Trading,Apa itu cut loss?,Cut loss adalah tindakan menjual saham yang merugi untuk menghindari kerugian lebih besar. Prinsipnya: let your profit run cut your loss short.
+11,Sentimen,Apa itu bullish?,Bullish = ekspektasi harga akan naik. Biasanya ditandai tren naik harga berita positif dan volume beli tinggi.
+12,Sentimen,Apa itu bearish?,Bearish = ekspektasi harga akan turun. Ditandai tren turun harga berita negatif dan volume jual tinggi.
+13,Indeks,Apa itu IHSG?,IHSG (Indeks Harga Saham Gabungan) adalah indeks yang mengukur kinerja semua saham yang listed di Bursa Efek Indonesia. Naik = pasar bullish secara umum.
+14,Indeks,Apa itu LQ45?,LQ45 adalah indeks 45 saham paling likuid di BEI. Saham-saham blue chip seperti BBCA BBRI TLKM biasanya masuk sini.
+15,Risiko,Apa itu diversifikasi?,Diversifikasi = menyebar investasi ke berbagai saham atau sektor. Tujuannya mengurangi risiko. Jangan taruh semua telur dalam satu keranjang.

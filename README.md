@@ -30,10 +30,10 @@ AI Agent — Google Gemini
    v                 v
 Redis           Tools:
 (Memory)        - get_stock_price_idx  (GoAPI)
-                - get_stock_price_us   (Alpha Vantage)
-                - get_stock_news       (NewsAPI)
-                - get_watchlist        (Google Sheet)
-                - get_faq              (Google Sheet)
+   |            - get_stock_price_us   (Alpha Vantage)
+   |            - get_stock_news       (NewsAPI)
+   |            - get_watchlist        (Google Sheet)
+   |            - get_faq              (Google Sheet)
    |
    v
 Code JavaScript (format output)

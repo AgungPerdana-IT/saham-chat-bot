@@ -1,0 +1,396 @@
+{
+  "name": "ai-stock-analyzer-n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "poll",
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ce4437a9-046a-4079-b7e4-85bad180d331",
+      "name": "Telegram Trigger",
+      "webhookId": "e0ddec21-b560-4ef6-b115-512644d982b3",
+      "credentials": {
+        "telegramApi": {
+          "id": "QIir19XVnxOlYCtL",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message?.text || $('Telegram Trigger').first().json.message.text }}\n",
+        "options": {
+          "systemMessage": "# ROLE & PERSONA\nNama: SahamBot\nKarakter: Asisten investasi saham global dan domestik yang andal. Gaya bicaramu ramah, edukatif, kasual, namun tetap informatif (menggunakan Bahasa Indonesia santai).\n\n# CAKUPAN TOPIK & BATASAN KETAT\n1. Kamu hanya boleh membantu menjawab topik seputar saham, analisis emiten, investasi, portofolio, dan pasar modal (Indonesia/IHSG & Amerika Serikat/US Market).\n2. Jika pertanyaan di luar topik pasar modal (misal: cuaca, resep masakan, politik umum, olahraga), TOLAK langsung secara sopan dengan kalimat:\n   \"Maaf, aku hanya bisa bantu soal saham dan investasi ya! 😊\"\n\n# DAFTAR ALAT (TOOLS) & ATURAN PEMANGGILAN\n1. [get_stock_price_us]: Wajib digunakan HANYA ketika user meminta cek harga saham AS/Internasional secara real-time (contoh: AAPL, TSLA, NVDA, MSFT, GOOG). Input wajib berupa simbol ticker resmi pasar saham AS. DILARANG menggunakan alat ini untuk saham Indonesia.\n2. [get_stock_news]: Wajib digunakan jika user meminta informasi perkembangan berita terbaru, update emiten lokal, atau sentimen pasar modal Indonesia.\n3. [get_watchlist]: Wajib digunakan jika user ingin melihat daftar pantauan portofolio saham domestik mereka (BBCA, TLKM, GOTO).\n4. [get_faq]: Wajib digunakan jika user menanyakan definisi, teori, istilah keuangan, atau rumus edukasi investasi (seperti PER, ROE, PBV, Dividen).\n5. [get_watchlist] lalu dilanjutkan [get_stock_news]: Wajib digunakan jika user meminta saran, analisis sentimen, atau kabar terbaru dari saham-saham yang ada di portofolio mereka sendiri. \n   - Alur Kerja AI: Pertama, panggil [get_watchlist] untuk melihat kode ticker apa saja yang user miliki. Kedua, ambil kode ticker tersebut (misal: BBCA, TLKM, GOTO) dan gunakan sebagai input untuk memanggil [get_stock_news] secara berurutan. Akhiri dengan memberikan saran atau rangkuman analisis gabungan yang objektif.\n6. [get_stock_price_idx]: Wajib digunakan HANYA ketika user meminta cek harga saham Indonesia secara real-time (contoh: BBCA, BBRI, AKRA, ANTM). Input wajib berupa simbol ticker resmi pasar saham Indonesia. DILARANG menggunakan alat ini untuk saham AS.\n\n\n# ALUR BERPIKIR MANDIRI (SELF-CRITICAL THINKING)\nSetiap menerima pertanyaan dari user, lakukan 3 langkah evaluasi internal secara berurutan di dalam otakmu sebelum menulis teks balasan:\n- LANGKAH 1 (Validasi Input & Pemilihan Alat): Analisis intensi user. Jika user mencari harga saham domestik (Indonesia), arahkan ke [get_watchlist] atau jelaskan bahwa data harga live yang tersedia saat ini adalah untuk pasar saham AS via [get_stock_price]. Jika kode ticker luar negeri dimasukkan, pastikan formatnya berupa simbol ticker resmi AS sebelum menembak alat.\n- LANGKAH 2 (Kritik Output): Setelah data dari alat terpilih keluar, periksa apakah ada teks berformat kode sistem, syntax eror, atau tanda kurung kurawal JSON {} yang ikut terbawa. Jika ada, bersihkan total.\n- LANGKAH 3 (Sintesis Final): Ubah data angka mentah menjadi kalimat bercerita bahasa Indonesia yang sangat mudah dipahami oleh investor pemula.\n\n# STANDARDISASI FORMAT JAWABAN AKHIR (TELEGRAM POLOS)\nKamu wajib menyusun teks jawaban dengan struktur baris baru (Enter) yang rapi. DILARANG menggunakan simbol markdown khusus (*, _, `, [) atau tag HTML agar tidak merusak sistem pembacaan teks di Telegram:\n\n- FORMAT HARGA SAHAM AS:\n  Kode Ticker Saham: [Sebutkan Ticker Saham US]\n  Harga Terakhir: USD [Angka harga dari tool]\n  Perubahan: [Tuliskan persentase naik/turunnya]\n  Kondisi: [Tuliskan analisis atau kesimpulan singkat trennya]\n\n- FORMAT HARGA SAHAM INDONESIA:\n  Kode Ticker Saham: [Sebutkan Ticker Saham IDX]\n  Harga Terakhir: IDR [Angka harga dari tool]\n  Perubahan: [Tuliskan persentase naik/turunnya]\n  Kondisi: [Tuliskan analisis atau kesimpulan singkat trennya]\n\n- FORMAT BERITA:\n  Rangkum artikel berita ke dalam maksimal 3 poin baris baru menggunakan awalan tanda strip (-) biasa. Tulis secara ringkas dan padat.\n\n- FORMAT FAQ / EDUKASI:\n  Jelaskan definisi istilah dengan analogi kehidupan sehari-hari yang sederhana, lalu berikan 1 contoh kasus konkret dengan simulasi angka rilnya.\n\n- FORMAT WATCHLIST / PORTOFOLIO:\n  Tampilkan daftar emiten milik user berjejer ke bawah secara terstruktur menggunakan penomoran angka biasa (1, 2, 3) lengkap dengan jumlah lot, tanggal beli, dan target harganya.\n\n# ATURAN PENANGANAN GAGAL (FALLBACK)\nJika data dari alat mengembalikan nilai kosong, tidak valid, atau memicu sistem eror, kamu wajib memberikan respons seragam berikut:\n\"Data tidak ditemukan. Pastikan kode saham yang dimasukkan benar (contoh saham Indonesia di portofolio: BBCA, TLKM, GOTO atau ticker saham luar negeri: AAPL, TSLA, NVDA).\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "3bb53384-b8ac-41a3-b64b-516f0795282f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -32,
+        192
+      ],
+      "id": "2938c575-3dd2-415f-bdbd-77c63063c998",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "585OxFZqSt7aylbo",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.formatted_message }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        832,
+        0
+      ],
+      "id": "5d9d84eb-0b4d-43de-8540-ff585a2bb969",
+      "name": "Send a text message",
+      "webhookId": "d02db2fb-88cc-4667-83a9-5635171635fc",
+      "credentials": {
+        "telegramApi": {
+          "id": "QIir19XVnxOlYCtL",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "=telegram_{{ $('Telegram Trigger').item.json.message.from.id }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.6,
+      "position": [
+        128,
+        192
+      ],
+      "id": "efbe0791-4f13-4b54-8959-f02c92b99c17",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "otAXCP4YB0JIeehY",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================================\n// N8N CODE NODE — JSON Response Formatter (HTML mode)\n// Ganti Parse Mode di Send Message node ke: HTML\n// ============================================================\n\n// Helper: escape karakter HTML supaya tidak rusak di Telegram\nfunction e(str) {\n  if (str === null || str === undefined) return \"\";\n  return String(str)\n    .replace(/&/g, \"&amp;\")\n    .replace(/</g, \"&lt;\")\n    .replace(/>/g, \"&gt;\");\n}\n\nfunction bold(str)   { return `<b>${e(str)}</b>`; }\nfunction italic(str) { return `<i>${e(str)}</i>`; }\nfunction code(str)   { return `<code>${e(str)}</code>`; }\n\n// ── Parse JSON dari output AI Agent ──────────────────────────\nconst raw = $input.item.json.output || $input.item.json.text || \"\";\n\nlet data;\ntry {\n  const cleaned = raw\n    .replace(/```json\\n?/g, \"\")\n    .replace(/```\\n?/g, \"\")\n    .trim();\n\n  const jsonStart = cleaned.indexOf(\"{\");\n  const jsonEnd   = cleaned.lastIndexOf(\"}\");\n  data = JSON.parse(cleaned.substring(jsonStart, jsonEnd + 1));\n} catch (err) {\n  return [{\n    json: {\n      formatted_message: e(raw) || \"⚠️ Maaf, terjadi kesalahan saat memproses respons.\",\n      parse_mode: \"HTML\"\n    }\n  }];\n}\n\nlet msg = \"\";\n\n// ── HARGA SAHAM ──────────────────────────────────────────────\nif (data.harga !== undefined) {\n  const up = !String(data.change_pct || \"\").startsWith(\"-\");\n  msg = `📈 ${bold(data.ticker)}\\n`\n      + `💰 Harga: ${bold(data.harga)}\\n`\n      + `${up ? \"🟢\" : \"🔴\"} ${e(data.change)} (${e(data.change_pct)})\\n`\n      + `📊 Vol: ${e(data.volume)}\\n`\n      + `🕐 ${e(data.last_update)}`;\n}\n\n// ── SENTIMEN ─────────────────────────────────────────────────\nelse if (data.sentimen !== undefined && data.ticker !== undefined) {\n  const sEmoji = { bullish:\"🟢\", bearish:\"🔴\", neutral:\"🟡\" }[data.sentimen] || \"⚪\";\n  const cEmoji = { HIGH:\"🔥\", MEDIUM:\"✅\", LOW:\"⚠️\" }[data.confidence] || \"\";\n  const positif = (data.faktor_positif || []).map(p => `• ${e(p)}`).join(\"\\n\");\n  const risiko  = (data.faktor_risiko  || []).map(r => `• ${e(r)}`).join(\"\\n\");\n\n  msg = `${sEmoji} ${bold(\"Sentimen \" + data.ticker + \": \" + data.sentimen.toUpperCase())}\\n`\n      + `${cEmoji} Confidence: ${e(data.confidence)}\\n\\n`\n      + `📝 ${e(data.ringkasan)}\\n\\n`\n      + (positif ? `✅ ${bold(\"Positif:\")}\\n${positif}\\n\\n` : \"\")\n      + (risiko  ? `⚠️ ${bold(\"Risiko:\")}\\n${risiko}\\n\\n`  : \"\")\n      + `💡 ${bold(\"Saran:\")} ${e(data.saran?.aksi?.toUpperCase())} — ${e(data.saran?.alasan)}\\n\\n`\n      + italic(data.disclaimer || \"Bukan rekomendasi investasi. DYOR.\");\n}\n\n// ── FAQ EDUKASI ───────────────────────────────────────────────\nelse if (data.istilah !== undefined) {\n  const related = (data.related_terms || []).map(t => e(t)).join(\", \");\n  msg = `📚 ${bold(data.istilah)}\\n\\n`\n      + `${e(data.definisi)}\\n\\n`\n      + `💡 ${bold(\"Contoh:\")} ${e(data.contoh)}\\n\\n`\n      + `🎯 ${bold(\"Tips:\")} ${e(data.tips)}\\n\\n`\n      + (related ? italic(\"Terkait: \" + related) : \"\");\n}\n\n// ── PORTFOLIO ─────────────────────────────────────────────────\nelse if (data.holdings !== undefined) {\n  const rows = (data.holdings || []).map(h => {\n    const sEmoji = { above_target:\"🎯\", at_target:\"✅\", on_track:\"📌\" }[h.status] || \"📌\";\n    return `${sEmoji} ${bold(h.ticker)} — Beli: ${e(String(h.harga_beli))} | Target: ${e(String(h.harga_target))} | ${e(String(h.lot))} lot`;\n  }).join(\"\\n\");\n\n  msg = `📋 ${bold(\"Watchlist Portfolio\")}\\n`\n      + `${italic(data.total_saham + \" saham\")}\\n\\n`\n      + `${rows}\\n\\n`\n      + `📊 ${e(data.summary)}`;\n}\n\n// ── REKOMENDASI ───────────────────────────────────────────────\nelse if (data.rating !== undefined) {\n  const rEmoji = { strong_buy:\"🚀\", buy:\"🟢\", hold:\"🟡\", sell:\"🔴\", strong_sell:\"💀\" }[data.rating] || \"⚪\";\n  msg = `${rEmoji} ${bold(data.ticker + \" — \" + data.rating.toUpperCase())}\\n`\n      + `🎯 Target: Rp ${e(String(data.target_price))} | ${e(data.time_horizon)} term\\n\\n`\n      + `📝 ${e(data.thesis)}\\n\\n`\n      + `🟢 Bull: ${e(data.bull_case)}\\n`\n      + `🔴 Bear: ${e(data.bear_case)}\\n\\n`\n      + `Confidence: ${e(data.confidence)}\\n`\n      + italic(data.disclaimer || \"Bukan rekomendasi investasi. DYOR.\");\n}\n\n// ── FALLBACK OUT OF SCOPE ─────────────────────────────────────\nelse if (data.status === \"out_of_scope\") {\n  const list = (data.saran || []).map(s => `• ${e(s)}`).join(\"\\n\");\n  msg = `🤖 ${e(data.pesan)}\\n\\nCoba tanya:\\n${list}`;\n}\n\n// ── FALLBACK DATA NOT FOUND ───────────────────────────────────\nelse if (data.status === \"data_not_found\") {\n  const list = (data.kemungkinan_penyebab || []).map(p => `• ${e(p)}`).join(\"\\n\");\n  msg = `⚠️ ${bold(data.pesan)}\\n\\n`\n      + `Input: ${code(data.input)}\\n\\n`\n      + `Kemungkinan penyebab:\\n${list}\\n\\n`\n      + `💡 ${e(data.saran)}`;\n}\n\n// ── DEFAULT ───────────────────────────────────────────────────\nelse {\n  msg = e(raw);\n}\n\nreturn [{\n  json: {\n    formatted_message: msg,\n    parse_mode: \"HTML\",\n    raw_json: data\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "8b46cc3e-7a76-49bb-b6bd-e10c2eca3f37",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "url": "=https://newsapi.org/v2/everything?q=indonesia+stock+market&language=en&sortBy=publishedAt&pageSize=10&apiKey=[YOUR_API_KEY]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        256,
+        352
+      ],
+      "id": "14febaa7-01bb-4575-bda5-87c96ccc47a1",
+      "name": "get_stock_news"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get row(s) in sheet in Google Sheets",
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "[YOUR_ID_GOOGLE_SHEET]",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "[YOUR_SHEET]",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        368
+      ],
+      "id": "4ea48412-88b4-4345-abd1-203e0abdd8d5",
+      "name": "get_watchlist",
+      "credentials": {
+        "googleApi": {
+          "id": "VJVxmaBDGROW9V1w",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get row(s) in sheet in Google Sheets",
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "[YOUR_ID_GOOGLE_SHEET]",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "[YOUR_SHEET]",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        576,
+        368
+      ],
+      "id": "d09523cf-7be6-458f-9956-497520f477bd",
+      "name": "get_faq",
+      "credentials": {
+        "googleApi": {
+          "id": "VJVxmaBDGROW9V1w",
+          "name": "Google Service Account account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.alphavantage.co/query",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "function",
+              "value": "=GLOBAL_QUOTE"
+            },
+            {
+              "name": "symbol",
+              "value": "={{ $fromAI('ticker', 'TSLA') }}"
+            },
+            {
+              "name": "apikey",
+              "value": "=[YOUR_API_KEY]"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        736,
+        368
+      ],
+      "id": "86490d6f-d293-46d4-825e-e71f65b6aac5",
+      "name": "get_stock_price_us"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.goapi.io/stock/idx/prices",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbols",
+              "value": "={{ $fromAI('ticker', 'BBCA') }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-KEY",
+              "value": "[YOUR_API_KEY]"
+            },
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        896,
+        368
+      ],
+      "id": "ccdd991a-8027-4491-a11d-f25ffe1ec1fb",
+      "name": "get_stock_price_idx"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_stock_news": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_watchlist": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_faq": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_stock_price_us": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_stock_price_idx": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "50bb6c84-afdd-4576-9e2d-1d15538cf522",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c76792efc8d2859b68f3a0d57a405ed8bbcce91a6e853f7c53f28fd50609cb53"
+  },
+  "nodeGroups": [],
+  "id": "jGmVetWUssf3RkVO",
+  "tags": []
+}
